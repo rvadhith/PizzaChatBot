@@ -86,13 +86,8 @@ let customerAddress = [];
 let makeOrderButton = document.getElementById("make-order"); 
 makeOrderButton.addEventListener("click", makeOrder);
 
-//let count = 0;
 
 function makeOrder(){
-    // count++;
-    // if(count > 0){
-    //     document.getElementById("make-order").addEventListener("click", makeOrder);
-    // }
     makeOrderButton.removeEventListener("click", makeOrder);
     let myDiv = document.getElementById("chat-area");
     
@@ -286,9 +281,6 @@ function selectSize(){
     smallPizza.addEventListener("click", quantitySelector);
     mediumPizza.addEventListener("click", quantitySelector);
     largePizza.addEventListener("click", quantitySelector);
-
-    // let inputField = document.getElementById("input-data");
-    // inputField.addEventListener("keypress", vegPizzaCostCalculator);
 }
 
 function quantitySelector(){
@@ -311,38 +303,25 @@ function quantitySelector(){
     myDiv.appendChild(quantityRequest);
 
     let inputButton =  document.getElementById("input-button");
-    let inputQuantitySelector = document.getElementById("input-data");
     
-    //let isRepetitionRequired = false;
     
-        inputButton.addEventListener("click", function () { 
-        let quantityInput = inputQuantitySelector.value; 
-            if(isNaN(quantityInput)){
-                //isRepetitionRequired = false;
-            }
-            else{
-                quantityChosen.push(quantityInput);
-                //isRepetitionRequired = true;
-                let quantitySelected = document.createElement('p');
-                let quantitySelectedText = document.createTextNode(`You have entered ${quantityChosen[quantityChosen.length - 1]}`);
-                quantitySelected.appendChild(quantitySelectedText);
-                myDiv.appendChild(quantitySelected);
-                requestMoreOrders();
-            }
-        });
-        
-        
-        inputQuantitySelector.addEventListener("keydown", function (event) {  
-            if (event.keyCode == 13) { 
-                inputButton.click(); 
-            } 
-        });
-        
-        
+    inputButton.addEventListener("click", requestMoreOrders);  
 }
 
 function requestMoreOrders(){
+    document.getElementById("input-button").removeEventListener("click", requestMoreOrders);
     let myDiv = document.getElementById("chat-area");
+    
+    let inputField = document.getElementById("input-data");
+    let quantityInput = inputField.value; 
+    quantityChosen.push(quantityInput);
+    inputField.value = "";
+
+    let quantitySelected = document.createElement('p');
+    let quantitySelectedText = document.createTextNode(`You have entered ${quantityChosen[quantityChosen.length - 1]}`);
+    quantitySelected.appendChild(quantitySelectedText);
+    myDiv.appendChild(quantitySelected);
+
     let moreOrderRequest = document.createElement('p');
     let moreOrderRequestText = document.createTextNode(`Would you like to order more`);
     moreOrderRequest.appendChild(moreOrderRequestText);
@@ -364,110 +343,130 @@ function requestMoreOrders(){
     myDiv.appendChild(noButton);
 
     yesButton.addEventListener("click", makeOrder);
-    noButton.addEventListener("click", getCustomerName);
+    noButton.addEventListener("click", requestCustomerName);
 }
 
 
-function getCustomerName(){
-    document.getElementById("no").removeEventListener("click", getCustomerName);
+function requestCustomerName(){
+    document.getElementById("no").removeEventListener("click", requestCustomerName);
     let myDiv = document.getElementById("chat-area");
     let customerNameRequest = document.createElement('p');
     let customerNameText = document.createTextNode(`Kindly enter your name`);
     customerNameRequest.appendChild(customerNameText);
     myDiv.appendChild(customerNameRequest);
 
-
     let inputButton =  document.getElementById("input-button");
-    let inputQuantitySelector = document.getElementById("input-data");
-    
-    inputButton.addEventListener("click", function () { 
-        let nameInput = inputQuantitySelector.value; 
-        customerName.push(nameInput);
-        inputQuantitySelector.value = "";
-        getCustomerPhoneNumber();    
-    });
-        
-        
-    inputQuantitySelector.addEventListener("keydown", function (event) {  
-        if (event.keyCode == 13) { 
-            inputButton.click(); 
-        } 
-    });
-    
-    
+    inputButton.addEventListener("click", getCustomerNameAndRequestPhoneNumber);       
 }
 
-
-function getCustomerPhoneNumber(){
+function getCustomerNameAndRequestPhoneNumber(){
+    document.getElementById("input-button").removeEventListener("click", getCustomerNameAndRequestPhoneNumber);
     let myDiv = document.getElementById("chat-area");
+    
+    let inputButton =  document.getElementById("input-button");
+    let inputField = document.getElementById("input-data");
+
+    let nameInput = inputField.value; 
+    customerName.push(nameInput);
+    inputField.value = "";
+    console.log(customerName[customerName.length - 1]);
+
+    let displayCustomerName = document.createElement('p');
+    let displayCustomerNameText = document.createTextNode(`You have entered ${customerName[customerName.length - 1]}`);
+    displayCustomerName.appendChild(displayCustomerNameText);
+    myDiv.appendChild(displayCustomerName);
+
     let customerPhoneNumberRequest = document.createElement('p');
     let customerPhoneNumberText = document.createTextNode(`Kindly enter your phone number`);
     customerPhoneNumberRequest.appendChild(customerPhoneNumberText);
     myDiv.appendChild(customerPhoneNumberRequest);
 
-
-    let inputButton =  document.getElementById("input-button");
-    let inputQuantitySelector = document.getElementById("input-data");
-    
-    inputButton.addEventListener("click", function () { 
-        let phoneNumberInput = inputQuantitySelector.value; 
-        customerPhoneNumber.push(phoneNumberInput);
-        inputQuantitySelector.value = "";
-        getCustomerAddress();    
-    });
-        
-        
-    inputQuantitySelector.addEventListener("keydown", function (event) {  
-        if (event.keyCode == 13) { 
-            inputButton.click(); 
-        } 
-    });    
+    inputButton.addEventListener("click", getCustomerPhoneNumberAndRequestAddress);
 }
 
-
-function getCustomerAddress(){
+function getCustomerPhoneNumberAndRequestAddress(){
+    document.getElementById("input-button").removeEventListener("click", getCustomerPhoneNumberAndRequestAddress);
     let myDiv = document.getElementById("chat-area");
+    let inputButton =  document.getElementById("input-button");
+    let inputField = document.getElementById("input-data");
+     
+    let phoneNumberInput = inputField.value; 
+    customerPhoneNumber.push(phoneNumberInput);
+    inputField.value = "";
+    console.log(customerPhoneNumber[customerPhoneNumber.length - 1]);
+
+    let displayCustomerPhoneNumber = document.createElement('p');
+    let displayCustomerPhoneNumberText = document.createTextNode(`You have entered ${customerPhoneNumber[customerPhoneNumber.length - 1]}`);
+    displayCustomerPhoneNumber.appendChild(displayCustomerPhoneNumberText);
+    myDiv.appendChild(displayCustomerPhoneNumber);
+    
     let customerAddressRequest = document.createElement('p');
     let customerAddressText = document.createTextNode(`Kindly enter your address`);
     customerAddressRequest.appendChild(customerAddressText);
     myDiv.appendChild(customerAddressRequest);
 
-
-    let inputButton =  document.getElementById("input-button");
-    let inputQuantitySelector = document.getElementById("input-data");
-    
-    inputButton.addEventListener("click", function () { 
-        let customerAddressInput = inputQuantitySelector.value; 
-        customerAddress.push(customerAddressInput);
-        inputQuantitySelector.value = "";
-        thankYouText();   
-    });
-        
-        
-    inputQuantitySelector.addEventListener("keydown", function (event) {  
-        if (event.keyCode == 13) { 
-            inputButton.click(); 
-        } 
-    });    
+    inputButton.addEventListener("click", displayThankYouText);
 }
 
-function thankYouText(){
+
+
+
+function displayThankYouText(){
+    document.getElementById("input-button").removeEventListener("click", displayThankYouText);
     let myDiv = document.getElementById("chat-area");
+
+    let inputField = document.getElementById("input-data");
+    let customerAddressInput = inputField.value; 
+    customerAddress.push(customerAddressInput);
+    inputField.value = "";
+    console.log(customerAddress[customerAddress.length - 1]);
+
+    let displayCustomerAddress = document.createElement('p');
+    let displayCustomerAddressText = document.createTextNode(`You have entered ${customerAddress[customerAddress.length - 1]}`);
+    displayCustomerAddress.appendChild(displayCustomerAddressText);
+    myDiv.appendChild(displayCustomerAddress);
+
+    let totalCost = 0;
+
+    for(let i = 0; i < pizzaChosen.length; i++){
+        if(isVegPizza[i] == true){
+            if(sizeChosen[i] == "Small"){
+                let pizza = pizzaChosen[i];
+                let cost = vegPizzaSmallPrices[(vegPizzaNames.indexOf(pizza))] * quantityChosen[i];
+                totalCost = totalCost + cost;
+            }
+            else if(sizeChosen[i] == "Medium"){
+                let pizza = pizzaChosen[i];
+                let cost = vegPizzaMediumPrices[(vegPizzaNames.indexOf(pizza))] * quantityChosen[i];
+                totalCost = totalCost + cost;
+            }
+            else{
+                let pizza = pizzaChosen[i];
+                let cost = vegPizzaLargePrices[(vegPizzaNames.indexOf(pizza))] * quantityChosen[i];
+                totalCost = totalCost + cost;
+            }
+        }
+        else{
+            if(sizeChosen[i] == "Small"){
+                let pizza = pizzaChosen[i];
+                let cost = nonvegPizzaSmallPrices[(nonvegPizzaNames.indexOf(pizza))] * quantityChosen[i];
+                totalCost = totalCost + cost;
+            }
+            else if(sizeChosen[i] == "Medium"){
+                let pizza = pizzaChosen[i];
+                let cost = nonvegPizzaMediumPrices[(nonvegPizzaNames.indexOf(pizza))] * quantityChosen[i];
+                totalCost = totalCost + cost;
+            }
+            else{
+                let pizza = pizzaChosen[i];
+                let cost = nonvegPizzaLargePrices[(nonvegPizzaNames.indexOf(pizza))] * quantityChosen[i];
+                totalCost = totalCost + cost;
+            }
+        }
+    }
+
     let displayThankYou = document.createElement('p');
-    let displayThankYouText = document.createTextNode(`Thank you. Have a nice day.`);
-    displayThankYou.appendChild(displayThankYouText);
+    let thankYouText = document.createTextNode(`Your total order cost is ${totalCost}. Thank you ${customerName[customerName.length - 1]}. Have a nice day.`);
+    displayThankYou.appendChild(thankYouText);
     myDiv.appendChild(displayThankYou);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
