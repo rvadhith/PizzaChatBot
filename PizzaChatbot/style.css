@@ -1,0 +1,77 @@
+h1 {
+    text-align: center;
+}
+
+
+/* #chatbot-box {
+    height: 100px;
+    width: 150px;
+    border: 1px solid black;
+} */
+
+
+#chatbot-box {
+    height: 400px;
+    width: 300px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+}
+
+#chat-area{
+    height: 360px;
+    width: 300px;
+    border: 1px solid black;
+    position: relative;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+#input-field{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+#vegpizza-container, #nonvegpizza-container{
+    /* position: absolute;
+    left: 400px; */
+    display: flex;
+    flex-direction: row;
+}
+
+.pizzas{
+    height: 200px;
+    width: 100px;
+    border: 1px solid black;
+    margin: 1px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.pizzas img{
+    height: 50px;
+    width: 50px;
+}
+
+.pizzas ul {
+    font-size: 8px;
+    display: flex;
+    flex-direction: row;
+}
+
+.pizzas ul li {
+    list-style-type: none;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+
+
