@@ -63,15 +63,22 @@ h1 {
 .pizzas ul {
     font-size: 8px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .pizzas ul li {
     list-style-type: none;
     justify-content: space-around;
     align-items: center;
+    padding: 2px;
 }
 
+.bot-text{
+    color: orangered;
+    text-align: left;
+}
 
-
-
+.user-text{
+    color: blueviolet;
+    text-align: right;
+}
