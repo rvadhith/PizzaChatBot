@@ -44,6 +44,12 @@ let nonvegPizzas = [
     }
 ];
 
+let orderDetails = [
+    {
+        id: 1,
+        OrderStatus: "Being Cooked"
+    }
+]
 
 let vegPizzaIds = [];
 let vegPizzaNames = [];
@@ -74,6 +80,7 @@ for(let j = 0; j < nonvegPizzas.length; j++){
     nonvegPizzaLargePrices.push(nonvegPizzas[j].lp);
 }
 
+
 let isVegPizza = [];
 let pizzaChosen = [];
 let sizeChosen = [];
@@ -86,25 +93,67 @@ let customerAddress = [];
 let makeOrderButton = document.getElementById("make-order"); 
 makeOrderButton.addEventListener("click", makeOrder);
 
+let trackOrderButton = document.getElementById("track-order"); 
+trackOrderButton.addEventListener("click", trackOrder);
+
+
+function trackOrder(){
+    trackOrderButton.removeEventListener("click", trackOrder);
+    trackOrderButton.removeEventListener("click", makeOrder);
+    let myDiv = document.getElementById("chat-area");
+    let inputButton =  document.getElementById("input-button");
+
+    let orderIdRequest = document.createElement('p');
+    orderIdRequest.className = "bot-text";
+    let orderIdRequestText = document.createTextNode(`Kindly enter your order id to be tracked`);
+    orderIdRequest.appendChild(orderIdRequestText);
+    myDiv.appendChild(orderIdRequest);
+
+    inputButton.addEventListener("click", displayOrderStatus);
+}
+
+function displayOrderStatus(){
+    makeOrderButton.removeEventListener("click", makeOrder);
+    document.getElementById("input-button").removeEventListener("click", displayOrderStatus);
+    let myDiv = document.getElementById("chat-area");
+
+    let inputField = document.getElementById("input-data");
+    let idInput = inputField.value; 
+    inputField.value = "";
+
+    let displayOrderId = document.createElement('p');
+    displayOrderId.className = "user-text";
+    let displayOrderIdText = document.createTextNode(`${idInput}`);
+    displayOrderId.appendChild(displayOrderIdText);
+    myDiv.appendChild(displayOrderId);
+
+    let getOrderStatus = document.createElement('p');
+    getOrderStatus.className = "bot-text";
+    let getOrderStatusText = document.createTextNode(`Your order is ${orderDetails[0].OrderStatus}`);
+    getOrderStatus.appendChild(getOrderStatusText);
+    myDiv.appendChild(getOrderStatus);
+
+}
 
 function makeOrder(){
     makeOrderButton.removeEventListener("click", makeOrder);
     let myDiv = document.getElementById("chat-area");
     
-    var q1 = document.createElement('p');
-    var q1Text = document.createTextNode(`Please let us know whether you prefer veg pizza or nonveg pizza`);
-    q1.appendChild(q1Text);
+    let pizzaTypePreference = document.createElement('p');
+    pizzaTypePreference.className = "bot-text";
+    let pizzaTypePreferenceText = document.createTextNode(`Please let us know whether you prefer veg pizza or nonveg pizza`);
+    pizzaTypePreference.appendChild(pizzaTypePreferenceText);
     
-    var btn1 = document.createElement('button');
+    let btn1 = document.createElement('button');
     btn1.id = 'veg';
-    var btn2 = document.createElement('button');
+    let btn2 = document.createElement('button');
     btn2.id = 'nonveg';
-    var btntext1 = document.createTextNode(`Veg Pizza`);
-    var btntext2 = document.createTextNode(`Non Veg Pizza`);
+    let btntext1 = document.createTextNode(`Veg Pizza`);
+    let btntext2 = document.createTextNode(`Non Veg Pizza`);
     btn1.appendChild(btntext1);
     btn2.appendChild(btntext2);
 
-    myDiv.appendChild(q1);
+    myDiv.appendChild(pizzaTypePreference);
     myDiv.appendChild(btn1);
     myDiv.appendChild(btn2);
 
@@ -122,8 +171,10 @@ function makeOrder(){
 
 
 function selectPizza(){
-    document.getElementById("veg").removeEventListener("click", selectPizza);
-    document.getElementById("nonveg").removeEventListener("click", selectPizza);
+    let vegButton = document.getElementById("veg");
+    vegButton.removeEventListener("click", selectPizza);
+    let nonvegButton = document.getElementById("nonveg");
+    nonvegButton.removeEventListener("click", selectPizza);
 
     let myDiv = document.getElementById("chat-area");
     let pizzaType = this.id;
@@ -161,6 +212,7 @@ function selectPizza(){
 
             let vegPizzaChoice = document.createElement('button');
             vegPizzaChoice.id = `${j}`;
+            vegPizzaChoice.addEventListener("click", selectSize);
 
             var vegPizzaChoiceData = document.createTextNode(`Choose`);
             vegPizzaChoice.appendChild(vegPizzaChoiceData);
@@ -169,10 +221,6 @@ function selectPizza(){
             vegPizza.appendChild(vegPizzaPriceList);
             vegPizza.appendChild(vegPizzaChoice);
             vegPizzaContainer.appendChild(vegPizza);
-        }
-
-        for(let a = 0; a < vegPizzas.length; a++){
-            document.getElementById(`${a}`).addEventListener("click", selectSize);
         }
     
         isVegPizza.push(true);
@@ -210,6 +258,7 @@ function selectPizza(){
 
             let nonvegPizzaChoice = document.createElement('button');
             nonvegPizzaChoice.id = `${j}`;
+            nonvegPizzaChoice.addEventListener("click", selectSize);
 
             let nonvegPizzaChoiceData = document.createTextNode(`Choose`);
             nonvegPizzaChoice.appendChild(nonvegPizzaChoiceData);
@@ -220,10 +269,6 @@ function selectPizza(){
             nonvegPizzaContainer.appendChild(nonvegPizza);
         }
 
-        for(let a = 0; a < nonvegPizzas.length; a++){
-            document.getElementById(`${a}`).addEventListener("click", selectSize);
-        }
-    
         isVegPizza.push(false);
     }
 
@@ -249,12 +294,14 @@ function selectSize(){
 
     let myDiv = document.getElementById("chat-area");
     let pizzaSelected = document.createElement('p');
-    let pizzaSelectedText = document.createTextNode(`You have chosen ${chosenPizza}`);
+    pizzaSelected.className = "user-text";
+    let pizzaSelectedText = document.createTextNode(`${chosenPizza}`);
     pizzaChosen.push(chosenPizza);
     pizzaSelected.appendChild(pizzaSelectedText);
     myDiv.appendChild(pizzaSelected);
 
     let sizeRequest = document.createElement('p');
+    sizeRequest.className = "bot-text";
     let sizeRequestText = document.createTextNode(`Please specify the size of Pizza`);
     sizeRequest.appendChild(sizeRequestText);
     myDiv.appendChild(sizeRequest);
@@ -293,11 +340,13 @@ function quantitySelector(){
 
     let myDiv = document.getElementById("chat-area");
     let sizeSelected = document.createElement('p');
-    let sizeSelectedText = document.createTextNode(`You have chosen ${sizeChosen[sizeChosen.length-1]}`);
+    sizeSelected.className = "user-text"; 
+    let sizeSelectedText = document.createTextNode(`${sizeChosen[sizeChosen.length-1]}`);
     sizeSelected.appendChild(sizeSelectedText);
     myDiv.appendChild(sizeSelected);
 
     let quantityRequest = document.createElement('p');
+    quantityRequest.className = "bot-text";
     let quantityRequestText = document.createTextNode(`Kindly specify the quantity of the aformentioned Pizza in the text box and press enter`);
     quantityRequest.appendChild(quantityRequestText);
     myDiv.appendChild(quantityRequest);
@@ -318,11 +367,13 @@ function requestMoreOrders(){
     inputField.value = "";
 
     let quantitySelected = document.createElement('p');
-    let quantitySelectedText = document.createTextNode(`You have entered ${quantityChosen[quantityChosen.length - 1]}`);
+    quantitySelected.className = "user-text";
+    let quantitySelectedText = document.createTextNode(`${quantityChosen[quantityChosen.length - 1]}`);
     quantitySelected.appendChild(quantitySelectedText);
     myDiv.appendChild(quantitySelected);
 
     let moreOrderRequest = document.createElement('p');
+    moreOrderRequest.className = "bot-text";    
     let moreOrderRequestText = document.createTextNode(`Would you like to order more`);
     moreOrderRequest.appendChild(moreOrderRequestText);
     myDiv.appendChild(moreOrderRequest);
@@ -351,6 +402,7 @@ function requestCustomerName(){
     document.getElementById("no").removeEventListener("click", requestCustomerName);
     let myDiv = document.getElementById("chat-area");
     let customerNameRequest = document.createElement('p');
+    customerNameRequest.className = "bot-text";
     let customerNameText = document.createTextNode(`Kindly enter your name`);
     customerNameRequest.appendChild(customerNameText);
     myDiv.appendChild(customerNameRequest);
@@ -372,11 +424,13 @@ function getCustomerNameAndRequestPhoneNumber(){
     console.log(customerName[customerName.length - 1]);
 
     let displayCustomerName = document.createElement('p');
-    let displayCustomerNameText = document.createTextNode(`You have entered ${customerName[customerName.length - 1]}`);
+    displayCustomerName.className = "user-text";
+    let displayCustomerNameText = document.createTextNode(`${customerName[customerName.length - 1]}`);
     displayCustomerName.appendChild(displayCustomerNameText);
     myDiv.appendChild(displayCustomerName);
 
     let customerPhoneNumberRequest = document.createElement('p');
+    customerPhoneNumberRequest.className = "bot-text";
     let customerPhoneNumberText = document.createTextNode(`Kindly enter your phone number`);
     customerPhoneNumberRequest.appendChild(customerPhoneNumberText);
     myDiv.appendChild(customerPhoneNumberRequest);
@@ -396,11 +450,13 @@ function getCustomerPhoneNumberAndRequestAddress(){
     console.log(customerPhoneNumber[customerPhoneNumber.length - 1]);
 
     let displayCustomerPhoneNumber = document.createElement('p');
-    let displayCustomerPhoneNumberText = document.createTextNode(`You have entered ${customerPhoneNumber[customerPhoneNumber.length - 1]}`);
+    displayCustomerPhoneNumber.className = "user-text";
+    let displayCustomerPhoneNumberText = document.createTextNode(`${customerPhoneNumber[customerPhoneNumber.length - 1]}`);
     displayCustomerPhoneNumber.appendChild(displayCustomerPhoneNumberText);
     myDiv.appendChild(displayCustomerPhoneNumber);
     
     let customerAddressRequest = document.createElement('p');
+    customerAddressRequest.className = "bot-text";
     let customerAddressText = document.createTextNode(`Kindly enter your address`);
     customerAddressRequest.appendChild(customerAddressText);
     myDiv.appendChild(customerAddressRequest);
@@ -422,7 +478,8 @@ function displayThankYouText(){
     console.log(customerAddress[customerAddress.length - 1]);
 
     let displayCustomerAddress = document.createElement('p');
-    let displayCustomerAddressText = document.createTextNode(`You have entered ${customerAddress[customerAddress.length - 1]}`);
+    displayCustomerAddress.className = "user-text";
+    let displayCustomerAddressText = document.createTextNode(`${customerAddress[customerAddress.length - 1]}`);
     displayCustomerAddress.appendChild(displayCustomerAddressText);
     myDiv.appendChild(displayCustomerAddress);
 
@@ -466,7 +523,27 @@ function displayThankYouText(){
     }
 
     let displayThankYou = document.createElement('p');
+    displayThankYou.className = "bot-text";
     let thankYouText = document.createTextNode(`Your total order cost is ${totalCost}. Thank you ${customerName[customerName.length - 1]}. Have a nice day.`);
     displayThankYou.appendChild(thankYouText);
     myDiv.appendChild(displayThankYou);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
