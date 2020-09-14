@@ -47,6 +47,12 @@ let nonvegPizzas = [
 let orderDetails = [
     {
         id: 1,
+        customerName: "Sam",
+        customerPhoneNumber: 9842163298,
+        customerAddress: "16D - ABT Residency, Kodambakkam, Chennai - 600028",
+        pizza: "Veg Classic",
+        size: "Medium",
+        quantity: 2,
         OrderStatus: "Being Cooked"
     }
 ]
@@ -90,6 +96,31 @@ let customerName = [];
 let customerPhoneNumber = [];
 let customerAddress = [];
 
+
+let newId = 0;
+
+let orderIds = [];
+let orderStatuses = [];
+let orderIdsSorted = [];
+
+for(let l = 0; l < orderDetails.length; l++){    
+    orderIds.push(orderDetails[l].id);
+    orderStatuses.push(orderDetails[l].OrderStatus);
+}
+
+console.log(orderIds);
+
+if(orderDetails.length == 0){
+    newId = 1;
+}
+else{
+    for(let k = 0; k < orderDetails.length; k++){ 
+        orderIdsSorted.push(orderDetails[k].id);
+        orderIdsSorted.sort(function(a,b){return a -b});
+        newId = orderIdsSorted[orderIdsSorted.length - 1] + 1;
+    }
+}
+
 let makeOrderButton = document.getElementById("make-order"); 
 makeOrderButton.addEventListener("click", makeOrder);
 
@@ -118,7 +149,8 @@ function displayOrderStatus(){
     let myDiv = document.getElementById("chat-area");
 
     let inputField = document.getElementById("input-data");
-    let idInput = inputField.value; 
+    inputField.setAttribute("type","number");
+    let idInput = inputField.value;
     inputField.value = "";
 
     let displayOrderId = document.createElement('p');
@@ -127,11 +159,28 @@ function displayOrderStatus(){
     displayOrderId.appendChild(displayOrderIdText);
     myDiv.appendChild(displayOrderId);
 
-    let getOrderStatus = document.createElement('p');
-    getOrderStatus.className = "bot-text";
-    let getOrderStatusText = document.createTextNode(`Your order is ${orderDetails[0].OrderStatus}`);
-    getOrderStatus.appendChild(getOrderStatusText);
-    myDiv.appendChild(getOrderStatus);
+    if(!(isNaN(idInput))){
+        idInput = parseInt(idInput);
+    }
+    
+    
+    if(orderIds.indexOf(idInput) >= 0){
+        let index = orderIds.indexOf(idInput);
+        let getOrderStatus = document.createElement('p');
+        getOrderStatus.className = "bot-text";
+        let getOrderStatusText = document.createTextNode(`Your order is ${orderDetails[index].OrderStatus}`);
+        getOrderStatus.appendChild(getOrderStatusText);
+        myDiv.appendChild(getOrderStatus);
+    }
+    else{
+        let getOrderStatus = document.createElement('p');
+        getOrderStatus.className = "bot-text";
+        let getOrderStatusText = document.createTextNode(`Sorry the entered id doesn't exist`);
+        getOrderStatus.appendChild(getOrderStatusText);
+        myDiv.appendChild(getOrderStatus);
+    }
+
+    
 
 }
 
@@ -300,6 +349,7 @@ function selectSize(){
     pizzaSelected.appendChild(pizzaSelectedText);
     myDiv.appendChild(pizzaSelected);
 
+
     let sizeRequest = document.createElement('p');
     sizeRequest.className = "bot-text";
     let sizeRequestText = document.createTextNode(`Please specify the size of Pizza`);
@@ -345,27 +395,34 @@ function quantitySelector(){
     sizeSelected.appendChild(sizeSelectedText);
     myDiv.appendChild(sizeSelected);
 
+
     let quantityRequest = document.createElement('p');
     quantityRequest.className = "bot-text";
     let quantityRequestText = document.createTextNode(`Kindly specify the quantity of the aformentioned Pizza in the text box and press enter`);
     quantityRequest.appendChild(quantityRequestText);
     myDiv.appendChild(quantityRequest);
 
-    let inputButton =  document.getElementById("input-button");
-    
-    
+    let inputField = document.getElementById("input-data");
+    inputField.setAttribute("type","number");
+    inputField.setAttribute("min","1");
+    inputField.setAttribute("max","10");
+    inputField.required = true;
+
+    let inputButton =  document.getElementById("input-button");  
     inputButton.addEventListener("click", requestMoreOrders);  
 }
 
 function requestMoreOrders(){
-    document.getElementById("input-button").removeEventListener("click", requestMoreOrders);
+    let inputButton =  document.getElementById("input-button");
+    inputButton.removeEventListener("click", requestMoreOrders);
     let myDiv = document.getElementById("chat-area");
-    
+
     let inputField = document.getElementById("input-data");
-    let quantityInput = inputField.value; 
+    let quantityInput = inputField.value;
     quantityChosen.push(quantityInput);
     inputField.value = "";
 
+    inputButton.removeEventListener("click", requestMoreOrders);
     let quantitySelected = document.createElement('p');
     quantitySelected.className = "user-text";
     let quantitySelectedText = document.createTextNode(`${quantityChosen[quantityChosen.length - 1]}`);
@@ -377,7 +434,6 @@ function requestMoreOrders(){
     let moreOrderRequestText = document.createTextNode(`Would you like to order more`);
     moreOrderRequest.appendChild(moreOrderRequestText);
     myDiv.appendChild(moreOrderRequest);
-
 
     let yesButton = document.createElement('button');
     yesButton.id = 'yes';
@@ -407,6 +463,9 @@ function requestCustomerName(){
     customerNameRequest.appendChild(customerNameText);
     myDiv.appendChild(customerNameRequest);
 
+    let inputField = document.getElementById("input-data");
+    inputField.setAttribute("type","text");
+
     let inputButton =  document.getElementById("input-button");
     inputButton.addEventListener("click", getCustomerNameAndRequestPhoneNumber);       
 }
@@ -417,6 +476,7 @@ function getCustomerNameAndRequestPhoneNumber(){
     
     let inputButton =  document.getElementById("input-button");
     let inputField = document.getElementById("input-data");
+
 
     let nameInput = inputField.value; 
     customerName.push(nameInput);
@@ -435,15 +495,19 @@ function getCustomerNameAndRequestPhoneNumber(){
     customerPhoneNumberRequest.appendChild(customerPhoneNumberText);
     myDiv.appendChild(customerPhoneNumberRequest);
 
+    inputField.setAttribute("type","number");
+    //inputField.setAttribute("type","tel");
+    //inputField.setAttribute("pattern","[0-9]{10}");
+
     inputButton.addEventListener("click", getCustomerPhoneNumberAndRequestAddress);
 }
 
 function getCustomerPhoneNumberAndRequestAddress(){
     document.getElementById("input-button").removeEventListener("click", getCustomerPhoneNumberAndRequestAddress);
     let myDiv = document.getElementById("chat-area");
-    let inputButton =  document.getElementById("input-button");
+    let inputButton =  document.getElementById("input-button"); 
     let inputField = document.getElementById("input-data");
-     
+
     let phoneNumberInput = inputField.value; 
     customerPhoneNumber.push(phoneNumberInput);
     inputField.value = "";
@@ -461,11 +525,10 @@ function getCustomerPhoneNumberAndRequestAddress(){
     customerAddressRequest.appendChild(customerAddressText);
     myDiv.appendChild(customerAddressRequest);
 
+    inputField.setAttribute("type","text");
+
     inputButton.addEventListener("click", displayThankYouText);
 }
-
-
-
 
 function displayThankYouText(){
     document.getElementById("input-button").removeEventListener("click", displayThankYouText);
@@ -522,28 +585,28 @@ function displayThankYouText(){
         }
     }
 
+    
+    let customerOrderDetails = [];
+
+    for(let j = 0; j < pizzaChosen.length; j++){
+        let order = {};
+        order.id = newId;
+        order.customerName = customerName[0];
+        order.customerPhoneNumber = customerPhoneNumber[0];
+        order.customerAddress = customerAddress[0];
+        order.pizza = pizzaChosen[j];
+        order.size = sizeChosen[j];
+        order.quantity = quantityChosen[j];
+        order.status = 'just booked';
+        console.log(order);
+        customerOrderDetails.push(order);
+    }
+
+    console.log(customerOrderDetails);
+
     let displayThankYou = document.createElement('p');
     displayThankYou.className = "bot-text";
     let thankYouText = document.createTextNode(`Your total order cost is ${totalCost}. Thank you ${customerName[customerName.length - 1]}. Have a nice day.`);
     displayThankYou.appendChild(thankYouText);
     myDiv.appendChild(displayThankYou);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
