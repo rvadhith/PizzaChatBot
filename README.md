@@ -2,7 +2,7 @@
 
 In this application I have built a chatbot which can take pizza orders. It can track the order as well.
 
-The application has been built using HTML, CCS and Javascript
+The application has been built using HTML, CSS and Javascript
 
 Ordering Pizza:
 
