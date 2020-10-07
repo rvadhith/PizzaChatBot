@@ -2,7 +2,7 @@
 
 In this application I have built a chatbot which can take pizza orders. It can track the order as well.
 
-The application has been built using HTML, CSS and Javascript. Since my spring boot app wasn't functioning as expected I couldn't create REST APIs and database. However I have taken an attempt to build the chatbot by having an array of objects with details of pizza to mimic an API data. Similarly I have created an array of objects with order details.
+The application has been built using HTML, CSS and Javascript.
 
 Ordering Pizza:
 
